@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, Dimensions, StyleSheet, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
+import {getApi, refresh} from '../../stroe/actions/RandomActions';
+
 
 import {
     RecyclerListView,
@@ -57,63 +59,18 @@ class RecyclerList extends Component {
                 }
             },
         );
-        this._rowRenderer = this._rowRenderer.bind(this);
 
-        this.state = {
-            dataProvider: new DataProvider(_ => false
-            ).cloneWithRows([]),
-            loading: false,
-            refresh: false,
-            error: null
 
-        };
     }
 
     page = 1;
     componentDidMount() {
 
-        this.getApi(1);
+        console.log('fdfdf')
+        this.props.getApi(1)
     }
 
-    getApi = async (page) => {
 
-        this.setState({
-            loading: true
-        })
-        try {
-            const res = await Axios
-                .get(`https://randomuser.me/api/?page=${page}&results=10`)
-                .catch(error => {
-                    alert("somThingRomndfl")
-                    this.setState({
-                        dataProvider: new DataProvider(_ => false
-                        ).cloneWithRows([]),
-                        loading: false,
-                        refresh: false,
-                        error: null
-                    })
-                })
-
-            console.log("Daata", res.data.results);
-
-            const dataProvider = new DataProvider((r1, r2) => r1.email !== r2.email);
-
-            this.setState({
-
-                dataProvider: dataProvider.cloneWithRows(
-                    [...this.state.dataProvider.getAllData(), ...res.data.results]
-                ),
-                loading: false,
-                refresh: false,
-                error: null
-            })
-
-
-
-        } catch (error) {
-            console.log('fg', error)
-        }
-    }
 
     _rowRenderer(type, data) {
         // You can return any view here, CellContainer has no special significance
@@ -128,7 +85,7 @@ class RecyclerList extends Component {
                         <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                             <Image
                                 source={{ uri: data.picture.thumbnail }}
-                                style={{ width: 50, height: 50, borderRadius: 25, marginTop:20 }}
+                                style={{ width: 50, height: 50, borderRadius: 25, marginTop: 20 }}
                             />
                             <View style={{ flex: 1, marginLeft: 20, justifyContent: 'center', }}>
                                 <Text>Email: {data.email}</Text>
@@ -145,10 +102,10 @@ class RecyclerList extends Component {
                     <Cell
                         style={styles.containerGridRight}
                     >
-                        <View style={{ flexDirection: 'row', justifyContent: "space-between",}}>
+                        <View style={{ flexDirection: 'row', justifyContent: "space-between", }}>
                             <Image
                                 source={{ uri: data.picture.thumbnail }}
-                                style={{ width: 50, height: 50, borderRadius: 25,  marginTop:20 }}
+                                style={{ width: 50, height: 50, borderRadius: 25, marginTop: 20 }}
                             />
                             <View style={{ flex: 1, marginLeft: 20, justifyContent: 'center' }}>
                                 <Text>Email: {data.email}</Text>
@@ -169,7 +126,7 @@ class RecyclerList extends Component {
     renderFooterSpinner = () => {
 
         return (
-            this.state.loading ?
+            this.props.loading ?
                 <ActivityIndicator
                     style={{ margin: 10 }}
                     size="large"
@@ -179,42 +136,10 @@ class RecyclerList extends Component {
         )
 
     };
-    refresh = async () => {
-        this.setState({
-            refresh: true
-        })
-        try {
-            const res = await Axios
-                .get(`https://randomuser.me/api/?page=1&results=8`)
-                .catch(error => {
-                    this.setState({
-                        dataProvider: new DataProvider(_ => false
-                        ).cloneWithRows([]),
-                        loading: false,
-                        refresh: false,
-                        error: null
-                    })
-                })
 
-            console.log("EEEEEEEEEE", res);
-
-            const dataProvider = new DataProvider((r1, r2) => r1.email !== r2.email);
-
-            this.setState({
-                ...this.state,
-                dataProvider: dataProvider.cloneWithRows(
-                    res.data.results
-                ),
-                loading: false,
-                refresh: false,
-                error: null
-            })
-
-
-
-        } catch (error) {
-            console.log('fg', error)
-        }
+    refresh = () => {
+        this.page = 1;
+        this.props.refresh();
     }
     onScroll = () => {
         this.page = 1;
@@ -225,17 +150,17 @@ class RecyclerList extends Component {
         return (
             <RecyclerListView
                 layoutProvider={this._layoutProvider}
-                dataProvider={this.state.dataProvider}
+                dataProvider={this.props.dataProvider}
                 rowRenderer={this._rowRenderer}
                 onEndReached={() => {
                     this.page++;
-                    this.getApi(this.page)
+                    this.props.getApi(this.page)
 
                 }}
                 isHorizontal={false}
                 refreshControl={
                     <RefreshControl
-                        refreshing={this.state.refresh}
+                        refreshing={this.props.isRefresh}
                         onRefresh={this.refresh.bind(this)}
                         colors={['blue']}
                     />
@@ -245,6 +170,7 @@ class RecyclerList extends Component {
                 renderFooter={this.renderFooterSpinner.bind(this)}
             // onScroll={this.onScroll.bind(this)}
             />
+            // <Text> mohames </Text>
         );
     }
 }
@@ -272,4 +198,26 @@ const styles = StyleSheet.create({
         backgroundColor: "#185D8D"
     }
 })
-export default RecyclerList;
+
+
+const mapSetToState = state => {
+
+    return {
+        dataProvider: state.dataProvider.dataProvider,
+        loading: state.dataProvider.loading,
+        isRefresh: state.dataProvider.refresh
+    }
+
+}
+const mapDispatchToProp = dispatch => {
+    return {
+
+        getApi: (page) => dispatch(getApi(page)),
+        refresh: () => dispatch(refresh())
+
+
+    }
+}
+
+
+export default connect(mapSetToState, mapDispatchToProp)(RecyclerList);
