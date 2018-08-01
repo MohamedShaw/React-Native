@@ -14,11 +14,18 @@ import Profile from './component/screens/Profile/Profile';
 import ReduxForm from './component/screens/ReduxForm/ReduxForm';
 import Animations from './component/screens/Animation/Animation';
 import MoreChatHeads from './component/screens/Animation/MoreChatHeads';
+import Recyclyer from './component/screens/Animation/Recyclyer';
+import ButtonSheet from './component/screens/Animation/ButtonSheet';
+// import Slide from './component/screens/Animation/Slide';
 
 import DeepStream from './component/screens/DS/DeebStream';
 const store = configerStrore();
 
 //register screen 
+Navigation.registerComponent('Slide',
+ ()=> Slide, 
+ store, 
+ Provider);
 Navigation.registerComponent('FindScreenPlace',
  ()=> FindPlaces, 
  store, 
@@ -26,6 +33,11 @@ Navigation.registerComponent('FindScreenPlace',
 
  Navigation.registerComponent('Animate',
  ()=> Animations, 
+ store, 
+ Provider);
+
+ Navigation.registerComponent('Recyler',
+ ()=> Recyclyer, 
  store, 
  Provider);
  Navigation.registerComponent('Animat',
@@ -50,7 +62,7 @@ Navigation.registerComponent('AuthScreenPlace', ()=> AuthScreen,  store, Provide
 Navigation.registerComponent('DetailScreen',()=>PlaceDetail,store,Provider );
 Navigation.registerComponent('Ds', ()=> DeepStream);
 
-
+Navigation.registerComponent("ButtonSheet", ()=>ButtonSheet)
 
 /////it takes 2 args 1- is unique name 2-is screen name
 
@@ -65,7 +77,7 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
     
     Navigation.startSingleScreenApp({
       screen : {
-        screen : 'Animat',
+        screen : 'Recyler',
         title : 'Wellcom To Login!',
         navigatorButtons:{
           leftButtons:{
@@ -95,7 +107,7 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
    
       Navigation.startSingleScreenApp({
         screen : {
-          screen : 'Animat',
+          screen : 'Recyler',
           title : 'Ds',
 
           navigatorButtons:{

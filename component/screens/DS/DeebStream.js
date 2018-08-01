@@ -31,21 +31,22 @@ export default class DeepStream extends React.Component {
     this.client = this.ds.login();
     console.log(this.client.getUid());
 
-    // this.list = this.client.record.getList('messages');
-    // console.log(this.list);
+    this.list = this.client.record.getList('messages');
+    console.log(this.list);
 
-    // this.list = this.list.on('new-message', value => {
-    //   this.setState(prevState => ({
-    //     messages: [...prevState.messages, value],
-    //   }));
-    // });
+    this.list = this.list.on('new-message', value => {
+      this.setState(prevState => ({
+        messages: [...prevState.messages, value],
+      }));
+    });
 
-    // this.list.subscribe(item => {
-    //   console.log('subscript')
-    //   this.setState({
-    //     messages: item,
-    //   });
-    // });
+    this.list.subscribe(item => {
+      console.log('subscript')
+      this.setState({
+        messages: item,
+      });
+    });
+    // 
     this.record = this.client.record.getRecord('test2');
 
     this.record.subscribe(data => {
@@ -56,7 +57,7 @@ export default class DeepStream extends React.Component {
       }));
     });
 
-
+    // 
   };
 
   handleSend = () => {
@@ -69,31 +70,31 @@ export default class DeepStream extends React.Component {
 
   render() {
     return (
-      // <View style={styles.container}>
-      //   <View style={styles.inputContainer}>
-      //     <TextInput
-      //       placeholder="char"
-      //       onChangeText={text => {
-      //         this.setState({ text });
-      //       }}
-      //       style={{ width: '80%', marginBottom: 15 }}
-      //     />
-      //     <Button title="send" onPress={this.handleSend} />
-      //   </View>
-      //   <View style={styles.messagesContainer}>
-      //     {this.state.messages.map((message, i) => (
-      //       <View key={i} style={styles.item}>
-      //         <Text style={styles.text}>{message}</Text>
-      //       </View>
-      //     ))}
-      //   </View>
-      // </View>
-      <View style={{ alignItems: 'center', marginTop: 200, flex: 1 }}>
-        <Text style={{ fontSize: 24 }}>My Status</Text>
-        <Text style={{ fontSize: 28, color: 'red' }}>
-          {this.state.myStatus}
-        </Text>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="char"
+            onChangeText={text => {
+              this.setState({ text });
+            }}
+            style={{ width: '80%', marginBottom: 15 }}
+          />
+          <Button title="send" onPress={this.handleSend} />
+        </View>
+        <View style={styles.messagesContainer}>
+          {this.state.messages.map((message, i) => (
+            <View key={i} style={styles.item}>
+              <Text style={styles.text}>{message}</Text>
+            </View>
+          ))}
+        </View>
       </View>
+      // <View style={{ alignItems: 'center', marginTop: 200, flex: 1 }}>
+      //   <Text style={{ fontSize: 24 }}>My Status</Text>
+      //   <Text style={{ fontSize: 28, color: 'red' }}>
+      //     {this.state.myStatus}
+      //   </Text>
+      // </View>
     );
   }
 }
