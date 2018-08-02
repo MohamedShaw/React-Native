@@ -172,6 +172,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:15.0.2'
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
     implementation 'com.google.firebase:firebase-storage:15.0.2'
+    compile project(':react-native-facebook-login')
+
     implementation(project(':react-native-firebase')) {
         transitive = false
     }

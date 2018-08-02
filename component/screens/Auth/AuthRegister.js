@@ -112,7 +112,7 @@ class AuthScreen extends Component {
         // })
         // alert(this.state.email)
         this.props.navigator.push({
-            screen: 'DetailScreen',
+            screen: 'NotifPanel',
             title:'Ds'
         })
 

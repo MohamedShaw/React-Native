@@ -1,3 +1,7 @@
+
 <resources>
     <string name="app_name">FlatTest</string>
+
+    <string name="fb_app_id">293583244536463</string>
+    <string name="fb_login_protocol_scheme">fb{293583244536463}</string>
 </resources>
