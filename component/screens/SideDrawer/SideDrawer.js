@@ -118,6 +118,23 @@ onModalClose = () => {
             <Text style = {{color: '#eee'}}>Sign Out</Text>
           </View>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress = {()=>{
+            this.props.navigator.push({
+              screen: 'message',
+              title:'chat'
+          })
+        }}>
+          <View style={styles.drawerItem}>
+            <Icon
+              name={Platform.OS === "android" ? "md-log-out" : "ios-log-out"}
+              size={30}
+              color="#aaa"
+              style={styles.drawerItemIcon}
+            />
+            <Text style = {{color: '#eee'}}>chat</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }

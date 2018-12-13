@@ -58,6 +58,7 @@ Provider)
 Navigation.registerComponent('SideDrawer', ()=> SideDrawer);
 Navigation.registerComponent('ReduxForm', ()=> ReduxForm, store, Provider);
 
+
   
 Navigation.registerComponent('AuthScreenPlace', ()=> AuthScreen,  store, Provider);
 ////detail
@@ -89,17 +90,17 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
         }
     
       },
-      //  drawer : {
-      //       left: {
-      //           screen: "SideDrawer"
-      //       },
-      //       disableOpenGesture: true
+       drawer : {
+            left: {
+                screen: "SideDrawer"
+            },
+            disableOpenGesture: true
 
 
-      //   },
-      //   appStyle : {
-      //     tabBarSelectedButtonColor : "green"
-      // }
+        },
+        appStyle : {
+          tabBarSelectedButtonColor : "green"
+      }
     });
     
   }else{
