@@ -45,7 +45,7 @@ export default class Fire {
     }
   };
   get ref() {
-    return firebase.database().ref('messages');
+    return firebase.database().ref('messages/id1_id2');
   }
 
   // 2.

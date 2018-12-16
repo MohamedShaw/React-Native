@@ -6,6 +6,7 @@ import startTabs from '../MainTabs/mainScreen';
 import FindPlaces from '../../screens/FindPlaces/FindPlaces'
 
 import DefaultInput from '../../UI/DefaultInput';
+import firebase from "react-native-firebase"
 
 import HeadingText from '../../UI/HeadingText';
 import MainText from '../../UI/MainText';
@@ -25,7 +26,7 @@ class AuthScreen extends Component {
     state = {
         viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscap',
         email: '',
-        password : ''
+        password: ''
     }
 
     constructor(props) {
@@ -48,21 +49,62 @@ class AuthScreen extends Component {
 
     }
     static navigatorStyle = {
-        navBarButtonColor : "orange"
+        navBarButtonColor: "orange"
     }
 
-   
-      onNavigatorEvent = event => {
+
+    onNavigatorEvent = event => {
         if (event.type === "NavBarButtonPress") {
-          if (event.id === "sideDrawerToggle") {
-            this.props.navigator.toggleDrawer({
-              side: "left"
-            });
-          }
+            if (event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
         }
-      };
+    };
 
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
 
+                this.props.navigator.push({
+                    screen: 'Main',
+                    title: 'Main',
+
+                })
+            } else {
+                this.props.navigator.push({
+                    screen: 'SignUp',
+                    title: 'SignUp',
+
+                })
+            }
+
+        })
+    }
+
+    handleLogin = () => {
+        // try {
+        //     AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.email))
+
+        // } catch (error) {
+        //     console.log("Error retrieving data" + error);
+        // }
+
+        const { email, pasword } = this.state
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+                AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.email))
+
+                this.props.navigator.push({
+                    screen: 'Main',
+
+                })
+            })
+            .catch(error => this.setState({ errorMessage: error.message }))
+    }
 
     componentWillUnmount() {
         Dimensions.removeEventListener('change', this.updateStyle)
@@ -84,47 +126,30 @@ class AuthScreen extends Component {
             console.log("Error saving data" + error);
         }
     }
-   
 
-    loginHandler =  () => {
+
+    loginHandler = () => {
         // alert('ddddddddddddddddddd');
 
         //move to next screen with Tabs
         // startTabs();
 
-      
+
         try {
-             AsyncStorage.setItem('@MySuperStore:key',JSON.stringify(this.state.email)  )
-            
+            AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.email))
+
         } catch (error) {
             console.log("Error retrieving data" + error);
         }
 
-        // this.props.navigation.navigate(
-            
-// this.props.navigation.push({
-//     screen:'ReduxForm'
-// })
 
-        // )
-        // this.props.navigation.push({
-        //     screen:'FindScreenPlace'
-        // })
-        // alert(this.state.email)
         this.props.navigator.push({
             screen: 'Message',
-            title:'Ds',
+            title: 'Ds',
             passProps: {
                 user: this.state.email,
             },
         })
-
-        // startTabs();
-// findn();
-        // <FindPlaces/>
-
-
-
     }
 
 
@@ -149,7 +174,7 @@ class AuthScreen extends Component {
                         <DefaultInput
                             placeholder='Your Email Adress'
                             style={styles.input}
-                            onChangeText={(val)=>{this.setState({email:val})}}
+                            onChangeText={(val) => { this.setState({ email: val }) }}
                             value={this.state.email}
 
                         />
@@ -166,8 +191,8 @@ class AuthScreen extends Component {
 
 
 
-                            <View style={this.state.viewMode === 'portrait' 
-                                ? styles.portraitPasswordWrap 
+                            <View style={this.state.viewMode === 'portrait'
+                                ? styles.portraitPasswordWrap
                                 : styles.landscapPasswordWrap}>
 
 
@@ -180,22 +205,21 @@ class AuthScreen extends Component {
 
                             </View  >
 
-
-
-
-
-
-
-                            <View style={this.state.viewMode === 'portrait'
-                                ? styles.portraitPasswordWrap
-                                : styles.landscapPasswordWrap} >
-                                <DefaultInput placeholder='Confirm Password' style={styles.input} />
-                            </View>
                         </View>
                     </View>
 
 
-                    <ButtonBackground onButtonPress={this.loginHandler} color='#eee'>Submit</ButtonBackground>
+                    <ButtonBackground onButtonPress={() => {
+                        this.handleLogin()
+                    }} color='#eee'>Submit</ButtonBackground>
+                    <ButtonBackground onButtonPress={() => {
+                        this.props.navigator.push({
+                            screen: 'SignUp',
+
+                        })
+
+                    }} color='#eee'>SignUp</ButtonBackground>
+
 
                 </View>
             </ImageBackground>

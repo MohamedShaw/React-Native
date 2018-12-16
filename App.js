@@ -1,13 +1,13 @@
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import AuthScreen from './component/screens/Auth/AuthRegister';
 import FindPlaces from './component/screens/FindPlaces/FindPlaces';
 import SharePlaces from './component/screens/SharedPlaces/SharePlaces';
 // import FindEmp from './component/screens/FindEmp/FindEmp';
 import PlaceDetail from './component/screens/PlaceDetail/PlaceDetail';
 import SideDrawer from './component/screens/SideDrawer/SideDrawer';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import configerStrore from './component/stroe/configurStore';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 import startTabs from './component/screens/MainTabs/mainScreen';
 import Profile from './component/screens/Profile/Profile';
 // import findn from './component/screens/MainTabs/find'
@@ -20,56 +20,66 @@ import ButtonSheet from './component/screens/Animation/ButtonSheet';
 import NotifPanel from './component/screens/Animation/SheetButton';
 import Message from "./component/screens/chat/Message";
 import DeepStream from './component/screens/DS/DeebStream';
+import SignUp from "./component/screens/signUp/SignUp";
+import Main from "./component/screens/Auth/Main";
 const store = configerStrore();
 
 //register screen 
 Navigation.registerComponent('NotifPanel',
- ()=> NotifPanel, 
- store, 
- Provider);
+  () => NotifPanel,
+  store,
+  Provider);
+Navigation.registerComponent('Main',
+  () => Main,
+  store,
+  Provider);
+Navigation.registerComponent('SignUp',
+  () => SignUp,
+  store,
+  Provider);
 
- Navigation.registerComponent('Message',
- ()=> Message, 
- store, 
- Provider);
+Navigation.registerComponent('Message',
+  () => Message,
+  store,
+  Provider);
 Navigation.registerComponent('FindScreenPlace',
- ()=> FindPlaces, 
- store, 
- Provider);
+  () => FindPlaces,
+  store,
+  Provider);
 
- Navigation.registerComponent('Animate',
- ()=> Animations, 
- store, 
- Provider);
+Navigation.registerComponent('Animate',
+  () => Animations,
+  store,
+  Provider);
 
- Navigation.registerComponent('Recyler',
- ()=> Recyclyer, 
- store, 
- Provider);
- Navigation.registerComponent('Animat',
- ()=> MoreChatHeads, 
- store, 
- Provider);
-Navigation.registerComponent('ShareScreenPlace', 
-  ()=> SharePlaces,
-  store, 
+Navigation.registerComponent('Recyler',
+  () => Recyclyer,
+  store,
+  Provider);
+Navigation.registerComponent('Animat',
+  () => MoreChatHeads,
+  store,
+  Provider);
+Navigation.registerComponent('ShareScreenPlace',
+  () => SharePlaces,
+  store,
   Provider);
 Navigation.registerComponent('Profile',
-()=> Profile,
-store,
-Provider)
+  () => Profile,
+  store,
+  Provider)
 
-Navigation.registerComponent('SideDrawer', ()=> SideDrawer);
-Navigation.registerComponent('ReduxForm', ()=> ReduxForm, store, Provider);
+Navigation.registerComponent('SideDrawer', () => SideDrawer);
+Navigation.registerComponent('ReduxForm', () => ReduxForm, store, Provider);
 
 
-  
-Navigation.registerComponent('AuthScreenPlace', ()=> AuthScreen,  store, Provider);
+
+Navigation.registerComponent('AuthScreenPlace', () => AuthScreen, store, Provider);
 ////detail
-Navigation.registerComponent('DetailScreen',()=>PlaceDetail,store,Provider );
-Navigation.registerComponent('Ds', ()=> DeepStream);
+Navigation.registerComponent('DetailScreen', () => PlaceDetail, store, Provider);
+Navigation.registerComponent('Ds', () => DeepStream);
 
-Navigation.registerComponent("ButtonSheet", ()=>ButtonSheet)
+Navigation.registerComponent("ButtonSheet", () => ButtonSheet)
 
 /////it takes 2 args 1- is unique name 2-is screen name
 
@@ -78,68 +88,68 @@ Navigation.registerComponent("ButtonSheet", ()=>ButtonSheet)
 
 
 
-const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
-  if (value == null ) {
+const value = AsyncStorage.getItem('@MySuperStore:key').then(value => {
+  if (value == null) {
     // startTabs();
-    
+
     Navigation.startSingleScreenApp({
-      screen : {
-        screen : 'AuthScreenPlace',
-        title : 'Wellcom To Login!',
-        navigatorButtons:{
-          leftButtons:{
-            title:'menu',
+      screen: {
+        screen: 'AuthScreenPlace',
+        title: 'Wellcom To Login!',
+        navigatorButtons: {
+          leftButtons: {
+            title: 'menu',
             id: "sideDrawerToggle"
           }
         }
-    
+
       },
-       drawer : {
-            left: {
-                screen: "SideDrawer"
-            },
-            disableOpenGesture: true
-
-
+      drawer: {
+        left: {
+          screen: "SideDrawer"
         },
-        appStyle : {
-          tabBarSelectedButtonColor : "green"
+        disableOpenGesture: true
+
+
+      },
+      appStyle: {
+        tabBarSelectedButtonColor: "green"
       }
     });
-    
-  }else{
+
+  } else {
 
     // alert(JSON.stringify(value))
 
-   
-      Navigation.startSingleScreenApp({
-        screen : {
-          screen : 'AuthScreenPlace',
-          title : 'Ds',
 
-          navigatorButtons:{
-            leftButtons:{
-              title:'menu',
-              id: "sideDrawerToggle"
-            }
+    Navigation.startSingleScreenApp({
+      screen: {
+        screen: 'AuthScreenPlace',
+        title: 'Ds',
+
+        navigatorButtons: {
+          leftButtons: {
+            title: 'menu',
+            id: "sideDrawerToggle"
           }
-      
-        },
-        drawer : {
-          left: {
-              screen: "SideDrawer"
-          }
-  
+        }
+
       },
-      appStyle : {
-        tabBarSelectedButtonColor : "green"
-    }
+      drawer: {
+        left: {
+          screen: "SideDrawer"
+        }
+
+      },
+      appStyle: {
+        tabBarSelectedButtonColor: "green"
+      }
 
     })
-   
-    
- 
-  // startTabs();
+
+
+
+    // startTabs();
   }
 });
 
@@ -201,7 +211,7 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
 // import PlaceDetail from './component/PlaceDetail/PlaceDetail';
 
 // class App extends Component {
-  
+
 //   placeAddedHandler = placeName => {
 //     this.props.onAddPlace(placeName);
 //   };
