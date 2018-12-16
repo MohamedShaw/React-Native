@@ -20,10 +20,11 @@ export default class Message extends React.Component {
         Fire.shared.off();
     }
     get user() {
+        alert(Fire.shared.uid)
 
         // Return our name and our UID for GiftedChat to parse
         return {
-            name: this.props.navigation.state.params.name,
+            name: this.props.user,
             _id: Fire.shared.uid,
         };
     }
@@ -34,6 +35,7 @@ export default class Message extends React.Component {
                 messages={this.state.messages}
                 onSend={Fire.shared.send}
                 user={this.user}
+                
             />
         );
     }

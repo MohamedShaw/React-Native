@@ -18,7 +18,7 @@ import Recyclyer from './component/screens/Animation/Recyclyer';
 import ButtonSheet from './component/screens/Animation/ButtonSheet';
 // import Login from './component/screens/Animation/FaceBook'
 import NotifPanel from './component/screens/Animation/SheetButton';
-
+import Message from "./component/screens/chat/Message";
 import DeepStream from './component/screens/DS/DeebStream';
 const store = configerStrore();
 
@@ -28,6 +28,10 @@ Navigation.registerComponent('NotifPanel',
  store, 
  Provider);
 
+ Navigation.registerComponent('Message',
+ ()=> Message, 
+ store, 
+ Provider);
 Navigation.registerComponent('FindScreenPlace',
  ()=> FindPlaces, 
  store, 
@@ -80,7 +84,7 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
     
     Navigation.startSingleScreenApp({
       screen : {
-        screen : 'NotifPanel',
+        screen : 'AuthScreenPlace',
         title : 'Wellcom To Login!',
         navigatorButtons:{
           leftButtons:{
@@ -110,7 +114,7 @@ const value = AsyncStorage.getItem('@MySuperStore:key').then(value =>{
    
       Navigation.startSingleScreenApp({
         screen : {
-          screen : 'NotifPanel',
+          screen : 'AuthScreenPlace',
           title : 'Ds',
 
           navigatorButtons:{

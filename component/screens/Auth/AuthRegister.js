@@ -112,8 +112,11 @@ class AuthScreen extends Component {
         // })
         // alert(this.state.email)
         this.props.navigator.push({
-            screen: 'NotifPanel',
-            title:'Ds'
+            screen: 'Message',
+            title:'Ds',
+            passProps: {
+                user: this.state.email,
+            },
         })
 
         // startTabs();

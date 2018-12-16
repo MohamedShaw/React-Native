@@ -27,7 +27,6 @@ import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.wix.interactable.Interactable;
 
-import com.magus.fblogin.FacebookLoginPackage;
 
 
 import java.util.Arrays;
@@ -63,8 +62,7 @@ public class MainApplication extends NavigationApplication  {
              new RNFirebaseStoragePackage(),
              new LottiePackage(),
              new LinearGradientPackage(),
-             new Interactable(),
-             new FacebookLoginPackage()
+             new Interactable()
 
 
          );

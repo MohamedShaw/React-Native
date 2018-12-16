@@ -13,7 +13,7 @@ import firebase from 'react-native-firebase';
 // }
 
 
-class Fire {
+export default class Fire {
   constructor() {
     this.init();
     this.observeAuth()
@@ -82,6 +82,7 @@ class Fire {
    return message;
   };
   get uid() {
+    
     return (firebase.auth().currentUser || {}).uid;
   }
   
@@ -108,6 +109,6 @@ class Fire {
   // 5.
   append = message => this.ref.push(message);
 }
+Fire.shared = new Fire();
 // firebase.initializeApp(firebaseConfig);
 
-export default firebase;
