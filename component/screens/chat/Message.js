@@ -4,10 +4,14 @@ import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-nativ
 import { Navigation } from 'react-native-navigation';
 import { GiftedChat } from "react-native-gifted-chat";
 import Fire from "../../firebase/config";
+import { connect } from 'react-redux';
+import firebase from "react-native-firebase"
 
-
-export default class Message extends React.Component {
+class Message extends React.Component {
     componentDidMount() {
+
+        Fire.shared.setId(this.props.id)
+
         Fire.shared.on(message =>
             this.setState(previousState => ({
                 messages: GiftedChat.append(previousState.messages, message),
@@ -15,17 +19,24 @@ export default class Message extends React.Component {
         );
     }
 
+
     // 2.
     componentWillUnmount() {
         Fire.shared.off();
+
+
     }
+
     get user() {
-        alert(Fire.shared.uid)
+        var user = firebase.auth().currentUser;
+        console.log("SSSSSS", user._user.email, );
+
+
 
         // Return our name and our UID for GiftedChat to parse
         return {
             name: this.props.user,
-            _id: Fire.shared.uid,
+            _id: this.props.uid,
         };
     }
     state = { message: [] } // 2. <- Add the component state
@@ -35,7 +46,7 @@ export default class Message extends React.Component {
                 messages={this.state.messages}
                 onSend={Fire.shared.send}
                 user={this.user}
-                
+
             />
         );
     }
@@ -59,3 +70,11 @@ const styles = StyleSheet.create({
         fontSize: offset,
     },
 });
+const mapSetToState = state => {
+
+    return {
+        id: state.places.selectedId
+    }
+
+}
+export default connect(mapSetToState, null)(Message)

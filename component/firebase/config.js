@@ -1,5 +1,6 @@
-
+import react, { Component } from "react"
 import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
 // Initialize Firebase
 
 
@@ -15,9 +16,11 @@ import firebase from 'react-native-firebase';
 
 export default class Fire {
   constructor() {
+
     this.init();
     this.observeAuth()
   }
+
 
 
   // 2.
@@ -44,10 +47,27 @@ export default class Fire {
       }
     }
   };
+  setId = (id) => {
+    console.log("################", id);
+
+    return id
+
+  }
   get ref() {
-    return firebase.database().ref('messages/id1_id2');
+
+    var user = firebase.auth().currentUser;
+    const id = this.setId()
+    console.log("DSDSAD", id);
+
+
+
+    return firebase.database().ref(`messages/${user._user.uid}_${id}`);
   }
 
+  get refUser() {
+
+    return firebase.database().ref(`users`);
+  }
   // 2.
   on = callback =>
     this.ref
@@ -63,15 +83,28 @@ export default class Fire {
     this.ref.off();
   }
 
+  onUser = callback =>
+    this.refUser
+      .limitToLast(20)
+      .on('child_added', snapshot => callback(this.parse(snapshot)));
+
+  // 3.
+  parse = snapshot => {
+  }
+
+  // 4.
+  offUser() {
+    this.refUser.off();
+  }
   parse = snapshot => {
 
     // 1.
     const { timestamp: numberStamp, text, user } = snapshot.val();
     const { key: _id } = snapshot;
-  
+
     // 2.
     const timestamp = new Date(numberStamp);
-  
+
     // 3.
     const message = {
       _id,
@@ -79,23 +112,25 @@ export default class Fire {
       text,
       user,
     };
-   return message;
+    return message;
   };
   get uid() {
-    
+
     return (firebase.auth().currentUser || {}).uid;
   }
-  
+
   // 2.
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP;
   }
-  
+
   // 3.
-  send = messages => {
+  send = (messages) => {
+    
+
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
-  
+
       // 4.
       const message = {
         text,
@@ -105,10 +140,19 @@ export default class Fire {
       this.append(message);
     }
   };
-  
+  sendUser = user => {
+
+    this.appendUser(user);
+
+  };
+
   // 5.
   append = message => this.ref.push(message);
+  appendUser = user => this.refUser.push(user);
+
 }
 Fire.shared = new Fire();
 // firebase.initializeApp(firebaseConfig);
+
+
 

@@ -81,6 +81,8 @@ class AuthScreen extends Component {
             }
 
         })
+        var user = firebase.auth().currentUser;
+
     }
 
     handleLogin = () => {
@@ -90,13 +92,16 @@ class AuthScreen extends Component {
         // } catch (error) {
         //     console.log("Error retrieving data" + error);
         // }
+        console.log(this.state.email, this.state.password);
 
-        const { email, pasword } = this.state
+        const { email, password } = this.state
         firebase
             .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(() => {
+            .signInAndRetrieveDataWithEmailAndPassword(email, password)
+            .then((res) => {
                 AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.email))
+
+                console.log("LOOOOOOOOOO", JSON.parse(JSON.stringify(res)));
 
                 this.props.navigator.push({
                     screen: 'Main',
@@ -199,7 +204,7 @@ class AuthScreen extends Component {
                                 <DefaultInput
                                     placeholder='Your Password'
                                     style={styles.input}
-                                    onChange={(value) => this.setState({ password: value })}
+                                    onChangeText={(value) => this.setState({ password: value })}
                                     value={this.state.password} />
 
 

@@ -1,8 +1,10 @@
 
-import { SET_PLACES, REMOVE_PLACE } from '../actions/ActionType';
+import { SET_PLACES, REMOVE_PLACE, SET_USERS, SET_SELECTED_ID } from '../actions/ActionType';
 
 const initialState = {
-  places: []
+  places: [],
+  users: [],
+  selectedId: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +14,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         places: action.places
       };
-      
+
+    case SET_USERS:
+      return {
+        ...state,
+        users: action.users
+      };
+
     case REMOVE_PLACE:
       return {
         ...state,
@@ -20,6 +28,8 @@ const reducer = (state = initialState, action) => {
           return place.key !== action.key;
         })
       };
+    case SET_SELECTED_ID:
+      return { ...state, selectedId: action.payload };
     default:
       return state;
   }
@@ -30,7 +40,7 @@ export default reducer;
 // import {ADD_PLACE, DELET_PLACE} from '../actions/ActionType';
 // const intialStat = {
 //     places: [],
-    
+
 // }
 // const reducer = (state = intialStat, actoin)=>{
 
@@ -54,12 +64,12 @@ export default reducer;
 //                         places: state.places.filter(place => {
 //                           return place.key !== actoin.placeKey;
 //                         }),
-                 
+
 
 //                 }
-            
-            
-    
+
+
+
 //         default:
 //             return state;
 //     }

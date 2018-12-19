@@ -3,9 +3,21 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import ButtonBackground from '../../UI/ButtonBackgroun';
 import DefaultInput from '../../UI/DefaultInput';
 import firebase from "react-native-firebase"
+import * as Actions from '../../stroe/actions/Places'
+import { connect } from 'react-redux';
+import Fire from "../../firebase/config";
 
-export default class SignUp extends React.Component {
+
+class SignUp extends React.Component {
     state = { email: '', password: '', errorMessage: null }
+    componentDidMount() {
+        // Fire.shared.onUser();
+    }
+
+    // 2.
+    componentWillUnmount() {
+        Fire.shared.offUser();
+    }
 
     handleSignUp = () => {
         // TODO: Firebase stuff...
@@ -14,8 +26,8 @@ export default class SignUp extends React.Component {
             .auth()
             .createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
             .then((res) => {
-                console.log("RESSS", res);
 
+                Fire.shared.sendUser(res)
                 this.props.navigator.push({
                     screen: 'Main',
                     title: 'Main',
@@ -87,3 +99,4 @@ const styles = StyleSheet.create({
         marginTop: 8
     }
 })
+export default connect(null, Actions)(SignUp);
